@@ -259,7 +259,7 @@ const AccountInfo = ({ user }) => {
               }}
             >
               <AddCardOutlinedIcon />
-              <Typography>{t("Deposit")}/CSKH </Typography>              
+              <Typography>{t("Deposit")}</Typography>              
             </Box>
           </Link>
           <Link href="/withdraw">
