@@ -251,7 +251,7 @@ const AccountInfo = ({ user }) => {
           </Box>
         </Box>
         <TransactionBox>
-          <Link href="#>
+          <Link href="/deposit">
             <Box
               className="item"
               sx={{
