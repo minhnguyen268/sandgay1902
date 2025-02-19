@@ -45,8 +45,8 @@ const handleConvertPath = (pathname) => {
     return "home";
   } else if (pathname.startsWith("/notifications")) {
     return "notifications";
-  } else if (pathname.startsWith("/deposit")) {
-    return "deposit";
+  } else if (pathname.startsWith("/withdraw")) {
+    return "withdraw";
   } else if (pathname.startsWith("/profile")) {
     return "profile";
   } else if (pathname.startsWith("/contact")) {
@@ -68,11 +68,11 @@ const Footer = () => {
       title: t('Promotion'),
     },
     {
-      key: "deposit",
+      key: "withdraw",
       icon: <AddBusinessOutlinedIcon />,
       activeIcon: <AddBusinessIcon />,
-      url: "/deposit",
-      title: t('Deposit'),
+      url: "/withdraw",
+      title: t('Withdraw'),
     },
     {
       key: "home",
