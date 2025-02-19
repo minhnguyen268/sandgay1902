@@ -33,7 +33,7 @@ const Deposit = () => {
               paddingTop: "5rem",
             }}
           >
-            <DanhSachBank danhSachNganHang={data} />
+            // <DanhSachBank danhSachNganHang={data} />
             <HuongDan />
           </Box>
         )}
