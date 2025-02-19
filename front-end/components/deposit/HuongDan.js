@@ -22,9 +22,6 @@ const HuongDan = () => {
         <h2 className="title">{t('DepositGuide title')}</h2>
         <Typography component="ul">
           <li>{t('DepositGuide step1')}</li>
-          <li>{t('DepositGuide step2')} {convertJSXMoney(MIN_MONEY_DEPOSIT)}</li>
-          <li>{t('DepositGuide step3')}</li>
-          <li>{t('DepositGuide step4')}</li>
         </Typography>
       </Box>
     </>
