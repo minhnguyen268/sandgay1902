@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
       args:
         NEXTAUTH_URL: https://sandsgponline.com
-        ENDPOINT_SERVER: https://sandsgponline.com
+        ENDPOINT_SERVER: https://admin.sandsgponline.com
         NEXTAUTH_SECRET: bsad21451a2120d56rr95ca0f8e0bbcb
         LIMIT_RESULTS: 10
         JWT_ACCESSTOKEN_EXPIRED: 10d
