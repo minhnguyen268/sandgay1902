@@ -251,7 +251,7 @@ const AccountInfo = ({ user }) => {
           </Box>
         </Box>
         <TransactionBox>
-          <Link href="/deposit">
+          <Link href="#>
             <Box
               className="item"
               sx={{
@@ -259,7 +259,7 @@ const AccountInfo = ({ user }) => {
               }}
             >
               <AddCardOutlinedIcon />
-              <Typography>{t("Deposit")}</Typography>
+              <Typography>{t("Deposit")}/CSKH </Typography>              
             </Box>
           </Link>
           <Link href="/withdraw">
