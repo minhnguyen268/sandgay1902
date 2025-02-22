@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import BreadcrumbBar from "@/components/admin/BreadcrumbBar";
 import Layout from "@/components/admin/Layout";
