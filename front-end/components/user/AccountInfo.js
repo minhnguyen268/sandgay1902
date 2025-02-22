@@ -1,14 +1,16 @@
-import Avatar from "@/public/assets/images/avatar.png";
 import AddCardOutlinedIcon from "@mui/icons-material/AddCardOutlined";
 import PriceChangeOutlinedIcon from "@mui/icons-material/PriceChangeOutlined";
 import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import Image from "next/image";
 import Link from "next/link";
 import Money from "./Money";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import SettingService from "@/services/admin/SettingService";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { toast } from "react-toastify";
 
 const TitleLeft = styled(Box)(({ theme }) => ({
   backgroundColor: "#dbb579",
@@ -131,6 +133,50 @@ const BorderTopStyle = styled(Box)(({ theme }) => ({
     },
   },
 }));
+
+const AccountId = ({ id }) => {
+  const { t } = useTranslation("common");
+  const [show, setShow] = useState(false);
+  const maskedId = `${id.slice(0, 3)}***${id.slice(-3)}`;
+
+  return (
+    <>
+      {show ? id : maskedId}
+      {!show && (
+        <VisibilityIcon
+          sx={{
+            fontSize: "2rem",
+            marginLeft: "1.5rem",
+            cursor: "pointer",
+          }}
+          onClick={() => setShow(!show)}
+        />
+      )}
+      {show && (
+        <VisibilityOffIcon
+          sx={{
+            fontSize: "2rem",
+            marginLeft: "1.5rem",
+            cursor: "pointer",
+          }}
+          onClick={() => setShow(!show)}
+        />
+      )}
+      <ContentCopyIcon
+        sx={{
+          fontSize: "2rem",
+          marginLeft: "1.2rem",
+          cursor: "pointer",
+        }}
+        onClick={() => {
+          navigator.clipboard.writeText(id);
+          toast.success(t("Copied to clipboard"));
+        }}
+      />
+    </>
+  );
+};
+
 const AccountInfo = ({ user }) => {
   const { t } = useTranslation("common");
   const [vipLogos, setVipLogos] = useState([]);
@@ -222,6 +268,21 @@ const AccountInfo = ({ user }) => {
               </small>{" "}
               <Money />
             </Typography>
+            <Typography
+              sx={{
+                fontSize: "2rem",
+                color: (theme) => theme.palette.text.primary,
+              }}
+            >
+              <small
+                style={{
+                  color: "#007bff",
+                }}
+              >
+                ID:
+              </small>{" "}
+              <AccountId id={user._id} />
+            </Typography>
             {user.referralCode && (
               <Typography
                 sx={{
@@ -259,7 +320,7 @@ const AccountInfo = ({ user }) => {
               }}
             >
               <AddCardOutlinedIcon />
-              <Typography>{t("Deposit")}</Typography>              
+              <Typography>{t("Deposit")}</Typography>
             </Box>
           </Link>
           <Link href="/withdraw">
