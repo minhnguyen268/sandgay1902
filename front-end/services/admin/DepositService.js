@@ -19,6 +19,19 @@ class DepositService {
     const res = await api.get(`/v1/admin/nap-tien?results=${pageSize}&page=${page}&userId=${userId}`);
     return res;
   };
+  static createDeposit = async ({ userId, soTien, nganHang, noiDung }) => {
+    const res = await api.post(`/v1/admin/nap-tien`, {
+      userId,
+      soTien,
+      nganHang,
+      noiDung,
+    });
+    return res;
+  };
+  static removeDeposit = async (id) => {
+    const res = await api.delete(`/v1/admin/nap-tien/${id}`);
+    return res;
+  };
 }
 
 export default DepositService;
