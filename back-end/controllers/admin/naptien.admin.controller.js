@@ -14,6 +14,9 @@ const TelegramService = require("../../services/telegram.service");
 const { TYPE_SEND_MESSAGE } = require("../../configs/telegram.config");
 const { LOAI_DEPOSIT, STATUS_DEPOSIT } = require("../../configs/deposit.config");
 const NguoiDung = require("../../models/NguoiDung");
+const HeThong = require("../../models/HeThong");
+const BienDongSoDu = require("../../models/BienDongSoDu");
+
 class NapTienAdminController {
   static getChiTietLichSuNap = catchAsync(async (req, res, next) => {
     const { id } = req.params;
@@ -148,6 +151,122 @@ class NapTienAdminController {
         sort: sortValue,
         userId,
       },
+    }).send(res);
+  });
+  static napTienChoNguoiDung = catchAsync(async (req, res, next) => {
+    const { userId, soTien, nganHang, noiDung } = req.body;
+    if (!soTien || !userId || !_.isNumber(soTien)) {
+      throw new BadRequestError("Vui lòng nhập đầy đủ thông tin");
+    }
+
+    const user = await NguoiDung.findOne({ _id: userId });
+    if (!user) {
+      throw new BadRequestError("Người dùng không tồn tại");
+    }
+
+    const session = await mongoose.startSession();
+
+    await session.withTransaction(async () => {
+      try {
+        let findThongTinNganHang;
+        if (nganHang) {
+          const hethong = await HeThong.findOne({
+            systemID: 1,
+            danhSachNganHang: {
+              $elemMatch: {
+                _id: nganHang,
+              },
+            },
+          });
+          findThongTinNganHang = (hethong.danhSachNganHang || []).find((item) => item._id.toString() === nganHang);
+        }
+
+        const bienDongSodu = await BienDongSoDuServiceFactory.createBienDong({
+          type: TYPE_BALANCE_FLUCTUATION.DEPOSIT,
+          payload: {
+            nguoiDung: userId,
+            tienTruoc: user.money,
+            tienSau: user.money + soTien,
+            noiDung: "Nạp tiền vào tài khoản",
+            loaiDeposit: LOAI_DEPOSIT.NAP_TIEN,
+          },
+          options: {
+            session,
+          },
+        });
+
+        await LichSuNap.create(
+          [
+            {
+              nguoiDung: userId,
+              nganHang: findThongTinNganHang ?? undefined,
+              soTien,
+              tinhTrang: STATUS_DEPOSIT.SUCCESS,
+              noiDung,
+              bienDongSoDuId: bienDongSodu[0]._id.toString(),
+            },
+          ],
+          {
+            session,
+          }
+        );
+
+        await NguoiDung.findOneAndUpdate(
+          {
+            taiKhoan: user.taiKhoan,
+          },
+          { $inc: { money: soTien } },
+          {
+            new: false,
+            session,
+          }
+        );
+
+        UserSocketService.updateUserBalance({ user: user.taiKhoan, updateBalance: soTien });
+
+        await session.commitTransaction();
+      } catch (err) {
+        console.log(err);
+        await session.abortTransaction();
+        throw err;
+      } finally {
+        await session.endSession();
+      }
+    });
+
+    return new OkResponse({
+      data: "success",
+    }).send(res);
+  });
+
+  static xoaLichSuNap = catchAsync(async (req, res, next) => {
+    const { id } = req.params;
+
+    const lichSuNap = await LichSuNap.findOne({ _id: id });
+    if (!lichSuNap) {
+      throw new BadRequestError("Lịch sử nạp không tồn tại");
+    }
+
+    const session = await mongoose.startSession();
+
+    await session.withTransaction(async () => {
+      try {
+        await LichSuNap.deleteOne({ _id: id }, { session });
+        if (lichSuNap.bienDongSoDuId) {
+          await BienDongSoDu.deleteOne({ _id: lichSuNap.bienDongSoDuId }, { session });
+        }
+        await session.commitTransaction();
+      } catch (err) {
+        console.log(err);
+        await session.abortTransaction();
+        throw err;
+      } finally {
+        await session.endSession();
+      }
+    });
+
+    return new OkResponse({
+      data: "success",
     }).send(res);
   });
 }
