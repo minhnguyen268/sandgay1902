@@ -286,7 +286,7 @@ const AccountInfo = ({ user }) => {
             {user.referralCode && (
               <Typography
                 sx={{
-                  fontSize: "2rem",
+                  fontSize: "1.5rem",
                   color: (theme) => theme.palette.text.primary,
                   display: "flex",
                   alignItems: "center",
