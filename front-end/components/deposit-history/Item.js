@@ -38,14 +38,16 @@ const ItemLichSu = ({ item }) => {
             {convertJSXTinhTrangDepositHistory(item.tinhTrang)}
           </Box>
 
-          <Typography
-            sx={{
-              color: "#b7b7b7",
-              fontSize: "1.3rem",
-            }}
-          >
-            {convertThongTinNganHang}
-          </Typography>
+          {item?.nganHang && (
+            <Typography
+              sx={{
+                color: "#b7b7b7",
+                fontSize: "1.3rem",
+              }}
+            >
+              {convertThongTinNganHang}
+            </Typography>
+          )}
           {item.noiDung && (
             <Typography
               sx={{
