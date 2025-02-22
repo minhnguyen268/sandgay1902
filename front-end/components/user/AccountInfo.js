@@ -145,7 +145,7 @@ const AccountId = ({ id }) => {
       {!show && (
         <VisibilityIcon
           sx={{
-            fontSize: "2rem",
+            fontSize: "1.3rem",
             marginLeft: "1.5rem",
             cursor: "pointer",
           }}
@@ -155,7 +155,7 @@ const AccountId = ({ id }) => {
       {show && (
         <VisibilityOffIcon
           sx={{
-            fontSize: "2rem",
+            fontSize: "1.5rem",
             marginLeft: "1.5rem",
             cursor: "pointer",
           }}
@@ -164,7 +164,7 @@ const AccountId = ({ id }) => {
       )}
       <ContentCopyIcon
         sx={{
-          fontSize: "2rem",
+          fontSize: "1.5rem",
           marginLeft: "1.2rem",
           cursor: "pointer",
         }}
@@ -270,7 +270,7 @@ const AccountInfo = ({ user }) => {
             </Typography>
             <Typography
               sx={{
-                fontSize: "2rem",
+                fontSize: "1.5rem",
                 color: (theme) => theme.palette.text.primary,
               }}
             >
@@ -286,7 +286,7 @@ const AccountInfo = ({ user }) => {
             {user.referralCode && (
               <Typography
                 sx={{
-                  fontSize: "1.5rem",
+                  fontSize: "15px",
                   color: (theme) => theme.palette.text.primary,
                   display: "flex",
                   alignItems: "center",
@@ -301,7 +301,7 @@ const AccountInfo = ({ user }) => {
                 </small>{" "}
                 <div
                   style={{
-                    fontSize: "16px",
+                    fontSize: "15px",
                     marginLeft: "5px",
                   }}
                 >
