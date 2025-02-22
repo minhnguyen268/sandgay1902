@@ -5,28 +5,35 @@ import { convertJSXMoney } from "@/utils/convertMoney";
 import { convertDateTime } from "@/utils/convertTime";
 import { convertJSXTinhTrangDepositHistory, convertTinhTrangDepositHistory } from "@/utils/convertTinhTrang";
 import InfoIcon from "@mui/icons-material/Info";
-import { Box, IconButton } from "@mui/material";
+import { Box, IconButton, Dialog, DialogTitle, DialogActions, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import CreateDeposit from "./CreateDeposit";
+import { toast } from "react-toastify";
+import DepositService from "@/services/admin/DepositService";
 
 const ListDeposit = ({ userId = "" }) => {
+  const [deleteId, setDeleteId] = useState("");
   const [page, setPage] = useState(0);
   const router = useRouter();
   const [pageSize, setPageSize] = useState(ADMIN_LIST_WITHDRAW_HISTORY_PAGE_SIZE);
-  const { data: dataQuery, isLoading } = useGetListDepositHistory({ page: page + 1, pageSize, userId });
+  const { data: dataQuery, isLoading, refetch } = useGetListDepositHistory({ page: page + 1, pageSize, userId });
   const { data: rowCountState } = useGetCountAllWithdrawHistory({ userId });
   const GridRowsProp =
     dataQuery?.map((item, i) => ({
       id: item._id,
       action: item._id,
       stt: i + 1,
-      taiKhoan: item?.nguoiDung?.taiKhoan?  item?.nguoiDung?.taiKhoan : '',
+      taiKhoan: item?.nguoiDung?.taiKhoan ? item?.nguoiDung?.taiKhoan : "",
       noiDung: item.noiDung,
       soTien: item.soTien,
       tinhTrang: item.tinhTrang,
-      nganHang: `${item.nganHang?.shortName} - ${item.nganHang?.soTaiKhoan} - ${item.nganHang?.tenChuTaiKhoan}`,
+      nganHang: item.nganHang
+        ? `${item.nganHang?.shortName} - ${item.nganHang?.soTaiKhoan} - ${item.nganHang?.tenChuTaiKhoan}`
+        : "",
       createdAt: convertDateTime(item.createdAt),
+      bienDongSoDuId: item.bienDongSoDuId,
     })) ?? [];
 
   const GridColDef = [
@@ -74,10 +81,66 @@ const ListDeposit = ({ userId = "" }) => {
         </IconButton>,
       ],
     },
+    {
+      field: "action-remove",
+      headerName: "Xóa giao dịch",
+      type: "actions",
+      width: 150,
+      getActions: (params) => {
+        return [
+          <>
+            {params.row.bienDongSoDuId && (
+              <button
+                onClick={() => {
+                  setDeleteId(params.id);
+                }}
+                style={{
+                  padding: "4px 10px",
+                  backgroundColor: "red",
+                  color: "white",
+                  borderRadius: "4px",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Xoá
+              </button>
+            )}
+          </>,
+        ];
+      },
+    },
   ];
+
+  const xoaGiaoDich = async (id) => {
+    try {
+      await DepositService.removeDeposit(id);
+      refetch();
+      setDeleteId("");
+      toast.success("Xoá giao dịch thành công");
+    } catch {
+      toast.error("Xoá giao dịch thất bại");
+    }
+  };
 
   return (
     <>
+      {!userId && <CreateDeposit refetch={refetch} />}
+
+      <Dialog open={deleteId} onClose={() => setDeleteId("")} sx={{ "& .MuiDialog-paper": { minWidth: "600px" } }}>
+        <DialogTitle>
+          Xác nhận xoá yêu cầu nạp tiền (đồng thời xoá lịch sử biến động của người cho giao dịch này)
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={() => setDeleteId("")} color="secondary">
+            Quay lại
+          </Button>
+          <Button onClick={() => xoaGiaoDich(deleteId)} color="primary">
+            Xoá
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <Box
         sx={{
           textAlign: "center",
