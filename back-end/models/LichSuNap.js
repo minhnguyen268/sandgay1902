@@ -23,6 +23,9 @@ const lichSuNapSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    bienDongSoDuId: {
+      type: String,
+    },
   },
   {
     collection: "LichSuNap",
