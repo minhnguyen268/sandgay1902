@@ -83,6 +83,7 @@ const Users = () => {
     { field: "referralUser", headerName: "Giới thiệu bởi", width: 150 },
     { field: "referralCount", headerName: "Số người giới thiệu", width: 150 },
     { field: "vipLevel", headerName: "Vip", width: 150 },
+    { field: "id", headerName: "ID", width: 200 },
     {
       field: "action",
       headerName: "Thao tác",
