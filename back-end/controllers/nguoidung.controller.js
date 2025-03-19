@@ -10,15 +10,37 @@ const ms = require("ms");
 const { signToken } = require("../utils/signToken");
 const { JWT_SECRET_KEY } = require("../configs/jwt.config");
 const { USER_ROLE } = require("../configs/user.config");
+const BienDongSoDu = require("../models/BienDongSoDu");
+
 class NguoiDungController {
   static getDetailedUser = catchAsync(async (req, res, next) => {
-    const { taiKhoan } = req.user;
+    const { taiKhoan, _id: userId } = req.user;
+    const date = req.query.date;
+    // get all balance fluctuations today
+    const balanceFluctuations = await BienDongSoDu.find({
+      nguoiDung: userId,
+      type: "game",
+      createdAt: { $gte: new Date(new Date(date).setHours(0, 0, 0, 0)) },
+    }).lean();
+    let totalChange = 0;
+    let totalPlay = 0;
+    balanceFluctuations.forEach((item) => {
+      totalChange += item.tienSau - item.tienTruoc;
+      if (item.tienSau < item.tienTruoc) {
+        totalPlay += item.tienTruoc - item.tienSau;
+      }
+    });
+
     const user = await NguoiDung.findOne({ taiKhoan }).select("-matKhau -__v -refreshToken").lean();
     if (!user) {
       throw new NotFoundError(`Không tồn tại tài khoản: ${taiKhoan}`);
     }
     return new OkResponse({
-      data: user,
+      data: {
+        ...user,
+        totalChange,
+        totalPlay,
+      },
     }).send(res);
   });
   static refreshToken = catchAsync(async (req, res, next) => {
