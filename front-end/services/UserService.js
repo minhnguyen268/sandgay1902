@@ -2,7 +2,7 @@ import api from "@/configs/axios";
 
 class UserService {
   static getDetailedInformation = async () => {
-    const result = await api.get(`/v1/nguoidung`);
+    const result = await api.get(`/v1/nguoidung?date=${new Date().toISOString()}`);
     return result;
   };
   static changePassword = async ({ currentPassword, newPassword }) => {
