@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const { MIN_LENGTH_ACCOUNT, MIN_LENGTH_PASSWORD, USER_ROLE, USER_STATUS } = require("../configs/user.config");
+const HeThong = require("./HeThong");
 
 const nguoiDungSchema = new mongoose.Schema(
   {
@@ -91,6 +92,9 @@ const nguoiDungSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    publicId: {
+      type: Number,
+    },
   },
   {
     collection: "NguoiDung",
@@ -98,8 +102,12 @@ const nguoiDungSchema = new mongoose.Schema(
   }
 );
 nguoiDungSchema.pre("save", async function (next) {
+  const system = await HeThong.findOne({ systemID: 1 });
   this.matKhau = await bcrypt.hash(this.matKhau, 12);
   this.nhapLaiMatKhau = undefined;
+  this.publicId = system.currentId;
+  system.currentId++;
+  await system.save();
   next();
 });
 
