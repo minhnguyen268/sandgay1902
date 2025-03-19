@@ -7,14 +7,14 @@ import HomeNotification from "../components/homePage/HomeNotification";
 import HomeSlide from "@/components/homePage/HomeSlide";
 import Banner1 from "@/public/assets/images/banner1.jpg";
 import Banner2 from "@/public/assets/images/banner2.jpg";
-import Keno1P from "@/public/assets/images/keno1p.png";
-import Keno3P from "@/public/assets/images/keno3p.png";
-import Keno5P from "@/public/assets/images/keno5p.png";
-import XocDia1P from "@/public/assets/images/xocdia1p.png";
-import XoSo3P from "@/public/assets/images/xoso3p.png";
-import XoSo5P from "@/public/assets/images/xoso5p.png";
-import XucXac1P from "@/public/assets/images/xucxac1p.png";
-import XucXac3P from "@/public/assets/images/xucxac3p.png";
+import Keno1P from "@/public/assets/images-new/keno1p.png";
+import Keno3P from "@/public/assets/images-new/keno3p.png";
+import Keno5P from "@/public/assets/images-new/keno5p.png";
+import XocDia1P from "@/public/assets/images-new/xocdia1p.png";
+import XoSo3P from "@/public/assets/images-new/xoso3p.png";
+import XoSo5P from "@/public/assets/images-new/xoso5p.png";
+import XucXac1P from "@/public/assets/images-new/xucxac1p.png";
+import XucXac3P from "@/public/assets/images-new/xucxac3p.png";
 import Image from "next/image";
 import "swiper/css";
 import { useTranslation } from "react-i18next";
@@ -22,6 +22,12 @@ import { useEffect, useState } from "react";
 import SettingService from "@/services/admin/SettingService";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import RutTien from "@/public/assets/images-new/rut.png";
+import NapTien from "@/public/assets/images-new/nap.png";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { useSelector } from "react-redux";
+import useGetInformationUser from "@/hooks/useGetInformationUser";
+import { convertJSXMoney } from "@/utils/convertMoney";
 
 const LIST_SWIPER = [
   {
@@ -142,6 +148,9 @@ const Home = () => {
     },
   ];
 
+  const { data, isLoading } = useGetInformationUser();
+  const { balance } = useSelector((state) => state.balance);
+
   return (
     <>
       <Layout>
@@ -149,6 +158,55 @@ const Home = () => {
 
         <Box sx={{}}>
           <HomeNotification />
+          {!isLoading && (
+            <GameItem style={{ cursor: "default" }}>
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontSize: "16px",
+                  alignItems: "center",
+                  color: "rgb(171 171 171)",
+                }}
+              >
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px", padding: "5px" }}>
+                  <div>
+                    {t("Chào mừng bạn")}, {data.taiKhoan}!
+                  </div>
+                  <div>
+                    ID: {data.publicId}
+                    <ContentCopyIcon
+                      sx={{
+                        fontSize: "1.5rem",
+                        marginLeft: "1.2rem",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        navigator.clipboard.writeText(data.publicId);
+                        toast.success(t("Copied to clipboard"));
+                      }}
+                    />
+                  </div>
+                  <div style={{ color: "white", fontSize: "18px" }}>$ {convertJSXMoney(balance)}</div>
+                </div>
+                <div style={{ display: "flex", gap: "30px", cursor: "pointer" }}>
+                  <Link href="/withdraw">
+                    <div style={{ display: "flex", flexDirection: "column", gap: "10px", alignItems: "center" }}>
+                      <Image src={NapTien} alt="nap" width={36} height={24} />
+                      {t("Deposit")}
+                    </div>
+                  </Link>
+                  <Link href="/deposit">
+                    <div style={{ display: "flex", flexDirection: "column", gap: "10px", alignItems: "center" }}>
+                      <Image src={RutTien} alt="rut" width={36} height={24} />
+                      {t("Withdraw")}
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            </GameItem>
+          )}
           <h2 className="title">Games</h2>
           {LIST_GAME.map((item, i) => (
             <div
