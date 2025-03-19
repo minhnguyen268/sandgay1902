@@ -13,7 +13,7 @@ import clsx from "clsx";
 import _ from "lodash";
 import { memo, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const BoxContainer = styled(Box)(({ theme }) => ({
   borderRadius: "2rem",
@@ -62,7 +62,7 @@ const ItemCuoc = styled(Box)(({ theme }) => ({
 }));
 
 const BoxDatCuoc = ({ TYPE_GAME = "keno1p", phien, tinhTrang }) => {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
   const titleDatCuocRef = useRef(null);
   const inputDatCuocRef = useRef(null);
   const { data: detailedBetHistoryData, refetch: refetchDetailedBetHistory } = useGetDetailedBetHistory({
@@ -114,7 +114,7 @@ const BoxDatCuoc = ({ TYPE_GAME = "keno1p", phien, tinhTrang }) => {
       });
       await refetchDetailedBetHistory();
       refetchUserBetHistory();
-      toast.success(t('Đặt cược thành công'));
+      toast.success(t("Đặt cược thành công"));
       handleResetCuoc();
     } catch (err) {
       console.log(err);
@@ -177,6 +177,23 @@ const BoxDatCuoc = ({ TYPE_GAME = "keno1p", phien, tinhTrang }) => {
     }
   };
 
+  const convertMarbleName = (number) => {
+    switch (number) {
+      case "1":
+        return "đầu tiên";
+      case "2":
+        return "thứ hai";
+      case "3":
+        return "thứ ba";
+      case "4":
+        return "thứ tư";
+      case "5":
+        return "thứ năm";
+      default:
+        return "Không xác định";
+    }
+  };
+
   return (
     <>
       {isLoading && <LoadingBox isLoading={isLoading} />}
@@ -200,7 +217,7 @@ const BoxDatCuoc = ({ TYPE_GAME = "keno1p", phien, tinhTrang }) => {
           },
         }}
       >
-        <h2 className="title">{t('Place')}</h2>
+        <h2 className="title">{t("Place")}</h2>
 
         <Box
           sx={{
@@ -218,7 +235,7 @@ const BoxDatCuoc = ({ TYPE_GAME = "keno1p", phien, tinhTrang }) => {
                   paddingBottom: "5px",
                 }}
               >
-                {t(`Cược bi ${item}`)}
+                {t(`Quả bóng ${convertMarbleName(item)}`)}
               </Typography>
               <Box
                 sx={{
@@ -239,7 +256,9 @@ const BoxDatCuoc = ({ TYPE_GAME = "keno1p", phien, tinhTrang }) => {
                       key={itemLoaiCuoc.tenCuoc}
                       onClick={() => handleChonCuoc({ loaiCuoc: itemLoaiCuoc.loaiCuoc, loaiBi: item })}
                     >
-                      <Typography className={clsx("loai_cuoc ")}>{t(itemLoaiCuoc.tenCuoc)}</Typography>
+                      <Typography className={clsx("loai_cuoc ")}>
+                        {t(itemLoaiCuoc.tenCuoc.replace("Chẵn", "Đôi").replace("Lẻ", "Đơn"))}
+                      </Typography>
                       <Typography>x{tiLe && tiLe[`bi_${item}`][itemLoaiCuoc.loaiCuoc]}</Typography>
                     </ItemCuoc>
                   );
@@ -265,7 +284,7 @@ const BoxDatCuoc = ({ TYPE_GAME = "keno1p", phien, tinhTrang }) => {
               }}
             >
               <Typography sx={{}} ref={titleDatCuocRef}>
-                {t('Bet amount')}
+                {t("Bet amount")}
               </Typography>
 
               <OutlinedInput
@@ -285,7 +304,7 @@ const BoxDatCuoc = ({ TYPE_GAME = "keno1p", phien, tinhTrang }) => {
                 onWheel={(e) => e.target.blur()}
               />
               <Typography component={"div"} sx={{}}>
-                {t('Chosen')}{" "}
+                {t("Chosen")}{" "}
                 <Typography
                   component={"span"}
                   sx={{
@@ -294,7 +313,7 @@ const BoxDatCuoc = ({ TYPE_GAME = "keno1p", phien, tinhTrang }) => {
                 >
                   {listDatCuoc.length}
                 </Typography>
-                , {t('Total bet')}{" "}
+                , {t("Total bet")}{" "}
                 <Typography
                   component={"span"}
                   sx={{
@@ -312,7 +331,7 @@ const BoxDatCuoc = ({ TYPE_GAME = "keno1p", phien, tinhTrang }) => {
                   fontSize: "2rem",
                 }}
               >
-                {tinhTrang === TINH_TRANG_GAME.DANG_QUAY ? t('Wait new round') : t('Place')}
+                {tinhTrang === TINH_TRANG_GAME.DANG_QUAY ? t("Wait new round") : t("Place")}
               </Button>
             </Box>
           </Box>
