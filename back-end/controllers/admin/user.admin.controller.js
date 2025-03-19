@@ -270,9 +270,7 @@ class UserAdminController {
     let query = {};
     if (searchQuery) {
       query = {
-        taiKhoan: {
-          $eq: searchQuery,
-        },
+        $or: [{ taiKhoan: searchQuery }, ...(!isNaN(searchQuery) ? [{ publicId: Number(searchQuery) }] : [])],
       };
     }
     if (filter === 2) {
