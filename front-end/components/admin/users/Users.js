@@ -40,6 +40,7 @@ const Users = () => {
 
   const GridRowsProp = dataQuery?.map((item, i) => ({
     id: item._id,
+    publicId: item.publicId,
     action: item._id,
     stt: i + 1,
     taiKhoan: item.taiKhoan,
@@ -56,6 +57,7 @@ const Users = () => {
 
   const GridColDef = [
     { field: "stt", headerName: "STT", width: 100 },
+    { field: "publicId", headerName: "ID", width: 200 },
     { field: "taiKhoan", headerName: "Tài khoản", width: 100 },
     {
       field: "money",
@@ -83,14 +85,13 @@ const Users = () => {
     { field: "referralUser", headerName: "Giới thiệu bởi", width: 150 },
     { field: "referralCount", headerName: "Số người giới thiệu", width: 150 },
     { field: "vipLevel", headerName: "Vip", width: 150 },
-    { field: "id", headerName: "ID", width: 200 },
     {
       field: "action",
       headerName: "Thao tác",
       type: "actions",
       width: 150,
       getActions: (params) => [
-        <IconButton sx={{ padding: '0px' }} onClick={() => router.push(`/admin/users/${params.id}`)}>
+        <IconButton sx={{ padding: "0px" }} onClick={() => router.push(`/admin/users/${params.id}`)}>
           <InfoIcon />
         </IconButton>,
       ],
@@ -173,7 +174,11 @@ const Users = () => {
         Danh sách người dùng
       </h1>
       <BoxSearch searchValue={searchValue} setSearchValue={setSearchValue} />
-      <select style={{ height: '40px', borderRadius: '10px', fontSize: '16px' }} value={filter} onChange={(event) => setFilter(event.target.value)}>
+      <select
+        style={{ height: "40px", borderRadius: "10px", fontSize: "16px" }}
+        value={filter}
+        onChange={(event) => setFilter(event.target.value)}
+      >
         <option value="0">Tất cả</option>
         <option value="1">Người dùng</option>
         <option value="2">Nhân viên</option>
