@@ -6,6 +6,7 @@ console.log("DATABASE", process.env.DATABASE);
 
 const http = require("http");
 const HeThong = require("./models/HeThong");
+const NguoiDung = require("./models/NguoiDung");
 const Setting = require("./models/Setting");
 const TelegramService = require("./services/telegram.service");
 const app = require("./app");
@@ -136,7 +137,7 @@ TelegramService.initBot().then(() => {
 
 const khoiTaoHeThongDB = async () => {
   try {
-    await HeThong.findOneAndUpdate(
+    const system = await HeThong.findOneAndUpdate(
       {
         systemID: 1,
       },
@@ -147,8 +148,38 @@ const khoiTaoHeThongDB = async () => {
         setDefaultsOnInsert: true,
       }
     );
+
+    if (!system.currentId) {
+      let currentId = 61268;
+
+      const users = await NguoiDung.find({});
+
+      for (const user of users) {
+        if (!user.publicId) {
+          user.publicId = currentId;
+          await NguoiDung.findOneAndUpdate(
+            {
+              _id: user._id,
+            },
+            {
+              publicId: currentId,
+            }
+          );
+          currentId++;
+        }
+      }
+
+      await HeThong.findOneAndUpdate(
+        {
+          systemID: 1,
+        },
+        {
+          currentId,
+        }
+      );
+    }
   } catch (err) {
-    console.log("Lỗi tạo hệ thống");
+    console.log("Lỗi tạo hệ thống", err);
   }
 };
 khoiTaoHeThongDB();
