@@ -1,9 +1,5 @@
-import AddCardOutlinedIcon from "@mui/icons-material/AddCardOutlined";
-import PriceChangeOutlinedIcon from "@mui/icons-material/PriceChangeOutlined";
 import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import Link from "next/link";
-import Money from "./Money";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import SettingService from "@/services/admin/SettingService";
@@ -11,6 +7,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { toast } from "react-toastify";
+import { convertJSXMoney } from "@/utils/convertMoney";
+import { useSelector } from "react-redux";
 
 const TitleLeft = styled(Box)(({ theme }) => ({
   backgroundColor: "#dbb579",
@@ -136,32 +134,10 @@ const BorderTopStyle = styled(Box)(({ theme }) => ({
 
 const AccountId = ({ id }) => {
   const { t } = useTranslation("common");
-  const [show, setShow] = useState(false);
-  const maskedId = `${id.slice(0, 3)}***${id.slice(-3)}`;
 
   return (
     <>
-      {show ? id : maskedId}
-      {!show && (
-        <VisibilityIcon
-          sx={{
-            fontSize: "1.3rem",
-            marginLeft: "1.5rem",
-            cursor: "pointer",
-          }}
-          onClick={() => setShow(!show)}
-        />
-      )}
-      {show && (
-        <VisibilityOffIcon
-          sx={{
-            fontSize: "1.5rem",
-            marginLeft: "1.5rem",
-            cursor: "pointer",
-          }}
-          onClick={() => setShow(!show)}
-        />
-      )}
+      {id}
       <ContentCopyIcon
         sx={{
           fontSize: "1.5rem",
@@ -180,6 +156,7 @@ const AccountId = ({ id }) => {
 const AccountInfo = ({ user }) => {
   const { t } = useTranslation("common");
   const [vipLogos, setVipLogos] = useState([]);
+  const { balance } = useSelector((state) => state.balance);
 
   const getData = async () => {
     const res = await SettingService.getClient();
@@ -200,7 +177,7 @@ const AccountInfo = ({ user }) => {
           backgroundColor: "#0c192c",
           border: (theme) => `2px solid #dbb579`,
           position: "relative",
-          height: "30rem",
+          height: "26rem",
           marginTop: "3rem",
         }}
       >
@@ -253,7 +230,7 @@ const AccountInfo = ({ user }) => {
               />
             </Box>
             <Typography sx={{ color: (theme) => theme.palette.text.primary }}>{user.taiKhoan}</Typography>
-            <Typography
+            {/* <Typography
               sx={{
                 fontSize: "3rem",
                 color: (theme) => theme.palette.text.primary,
@@ -267,7 +244,7 @@ const AccountInfo = ({ user }) => {
                 $
               </small>{" "}
               <Money />
-            </Typography>
+            </Typography> */}
             <Typography
               sx={{
                 fontSize: "1.5rem",
@@ -281,7 +258,7 @@ const AccountInfo = ({ user }) => {
               >
                 ID:
               </small>{" "}
-              <AccountId id={user._id} />
+              <AccountId id={user.publicId} />
             </Typography>
             {user.referralCode && (
               <Typography
@@ -309,9 +286,33 @@ const AccountInfo = ({ user }) => {
                 </div>
               </Typography>
             )}
+            <div
+              style={{
+                fontSize: "18px",
+                color: "white",
+                padding: "10px",
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+                textAlign: "center",
+              }}
+            >
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "5px" }}>
+                <div style={{ fontSize: "12px", color: "rgb(171 171 171)" }}>{t("Số dư tài khoản")}</div>
+                <div>{convertJSXMoney(balance)}</div>
+              </div>
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "5px" }}>
+                <div style={{ fontSize: "12px", color: "rgb(171 171 171)" }}>{t("Hôm nay cá cược")}</div>
+                <div>{convertJSXMoney(user.totalPlay)}</div>
+              </div>
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "5px" }}>
+                <div style={{ fontSize: "12px", color: "rgb(171 171 171)" }}>{t("Hôm nay lợi nhuận")}</div>
+                <div>{convertJSXMoney(user.totalChange)}</div>
+              </div>
+            </div>
           </Box>
         </Box>
-        <TransactionBox>
+        {/* <TransactionBox>
           <Link href="/deposit">
             <Box
               className="item"
@@ -334,7 +335,7 @@ const AccountInfo = ({ user }) => {
               <Typography>{t("Withdraw")}</Typography>
             </Box>
           </Link>
-        </TransactionBox>
+        </TransactionBox> */}
       </Box>
     </>
   );
