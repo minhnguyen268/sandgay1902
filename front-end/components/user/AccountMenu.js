@@ -10,7 +10,7 @@ import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const AccountMenuItem = styled(Box)(({ theme }) => ({
   cursor: "pointer",
@@ -29,43 +29,43 @@ const AccountMenuItem = styled(Box)(({ theme }) => ({
 
 const AccountMenu = () => {
   const { data: session, status } = useSession();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
 
   const listMenu = [
     {
       icon: <LocalAtmOutlinedIcon />,
-      title: t('Balance fluctuations'),
+      title: t("Balance fluctuations"),
       url: "/balance-fluctuations",
     },
-  
+
     {
       icon: <CreditScoreOutlinedIcon />,
-      title: t('Deposit history'),
+      title: t("Deposit history"),
       url: "/deposit-history",
     },
     {
       icon: <PaymentsOutlinedIcon />,
-      title: t('Withdrawal history'),
+      title: t("Withdrawal history"),
       url: "/withdraw-history",
     },
     {
       icon: <AccountBalanceOutlinedIcon />,
-      title: t('Linked bank account'),
+      title: t("Linked bank account"),
       url: "/list-bank",
     },
     {
       icon: <LockPersonOutlinedIcon />,
-      title: t('Change password'),
+      title: t("Change password"),
       url: "/password",
     },
     {
       icon: <PhoneIcon />,
-      title: t('Change phone number'),
+      title: t("Change phone number"),
       url: "/phone",
     },
     {
       icon: <LogoutOutlinedIcon />,
-      title: t('Logout'),
+      title: t("Logout"),
       url: "/sign-out",
     },
   ];
@@ -77,14 +77,13 @@ const AccountMenu = () => {
           padding: "1rem",
           display: "flex",
           flexDirection: "column",
-          marginTop: "4rem",
         }}
       >
         {session && session.user && (session.user.role === "admin" || session.user.role === "manager") && (
           <Link href={"/admin"}>
             <AccountMenuItem>
               <ManageAccountsIcon />
-              <Typography className="title-menu">{t('Management')}</Typography>
+              <Typography className="title-menu">{t("Management")}</Typography>
             </AccountMenuItem>
           </Link>
         )}
