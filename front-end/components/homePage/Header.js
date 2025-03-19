@@ -52,6 +52,7 @@ const Header = () => {
   const [scriptChat, setScriptChat] = useState();
   const [games, setGames] = useState([]);
   const router = useRouter();
+  const [isShowPopup, setIsShowPopup] = useState(false);
 
   const LIST_GAME = [
     {
@@ -110,6 +111,13 @@ const Header = () => {
 
   useEffect(() => {
     getData();
+
+    const showPopup = localStorage.getItem("showPopup");
+    if (showPopup !== "false") {
+      setIsShowPopup(true);
+    }
+
+    localStorage.setItem("showPopup", "false");
   }, []);
 
   useEffect(() => {
@@ -173,7 +181,7 @@ const Header = () => {
 
   return (
     <>
-      {noiDungPopup && (
+      {noiDungPopup && isShowPopup && (
         <Dialog PaperProps={{ sx: { borderRadius: "10px" } }} open={isDialogOpen} onClose={handleClose}>
           <DialogTitle style={{ color: "white", backgroundColor: "red", textAlign: "center" }}>
             {t("SystemNotification")}
