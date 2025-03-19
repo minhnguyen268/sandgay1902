@@ -10,6 +10,7 @@ function getTileValue(value) {
 const heThongSchema = new mongoose.Schema(
   {
     systemID: { type: Number, default: 1 },
+    currentId: { type: Number },
     danhSachNganHang: [
       {
         shortName: { type: String },
