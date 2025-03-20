@@ -191,13 +191,13 @@ const Home = () => {
                   <div style={{ color: "white", fontSize: "18px" }}>$ {convertJSXMoney(balance)}</div>
                 </div>
                 <div style={{ display: "flex", gap: "30px", cursor: "pointer" }}>
-                  <Link href="/withdraw">
+                  <Link href="/deposit">
                     <div style={{ display: "flex", flexDirection: "column", gap: "10px", alignItems: "center" }}>
                       <Image src={NapTien} alt="nap" width={36} height={24} />
                       {t("Deposit")}
                     </div>
                   </Link>
-                  <Link href="/deposit">
+                  <Link href="/withdraw">
                     <div style={{ display: "flex", flexDirection: "column", gap: "10px", alignItems: "center" }}>
                       <Image src={RutTien} alt="rut" width={36} height={24} />
                       {t("Withdraw")}
