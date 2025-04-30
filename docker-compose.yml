@@ -5,8 +5,8 @@ services:
       context: ./front-end
       dockerfile: Dockerfile
       args:
-        NEXTAUTH_URL: https://onlinesands.vip
-        ENDPOINT_SERVER: https://admin.onlinesands.vip
+        NEXTAUTH_URL: https://sandsonline.vip
+        ENDPOINT_SERVER: https://admin.sandsonline.vip
         NEXTAUTH_SECRET: bsad21451a2120d56rr95ca0f8e0bbcb
         LIMIT_RESULTS: 10
         JWT_ACCESSTOKEN_EXPIRED: 10d
