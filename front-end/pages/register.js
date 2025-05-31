@@ -53,6 +53,10 @@ const DangKy = () => {
       .trim(t("Vui lòng nhấp số điện thoại hợp lệ"))
       .matches(/^0\d{9,10}$/, t("Vui lòng nhấp số điện thoại hợp lệ"))
       .strict(true),
+    maGioiThieu: Yup.string()
+      .required(t("Mã giới thiệu không được để trống"))
+      .trim(t("Mã giới thiệu không được để trống"))
+      .strict(true),
   });
   const formOptions = { resolver: yupResolver(validationSchema) };
 
