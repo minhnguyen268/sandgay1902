@@ -91,7 +91,7 @@ class NguoiDungController {
   static createUser = catchAsync(async (req, res, next) => {
     const { taiKhoan, matKhau, nhapLaiMatKhau, soDienThoai, maGioiThieu } = req.body;
     const settingData = await Setting.findOne({}).lean();
-    const userRef = await NguoiDung.findOne({ referralCode: maGioiThieu });
+  const userRef = maGioiThieu ? await NguoiDung.findOne({ referralCode: maGioiThieu }) : null;
 
     if (settingData.maGioiThieu !== maGioiThieu && !userRef) {
       throw new BadRequestError("Mã giới thiệu không đúng");
