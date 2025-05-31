@@ -69,7 +69,11 @@ const convertTinhTrang = (tinhTrang) => {
   }
 };
 export const convertJSXTinhTrangGameKeno = (tinhTrang) => {
+  const ConvertTranslate = ({ text }) => {
   const { t } = useTranslation('common');
+  return <>{t(text)}</>;
+}
+
 
   return (
     <StatusButton
@@ -77,12 +81,15 @@ export const convertJSXTinhTrangGameKeno = (tinhTrang) => {
         backgroundColor: convertMaMauTinhTrangGameKeno(tinhTrang),
       }}
     >
-      <Typography>{t(convertTinhTrangGameKeno(tinhTrang))}</Typography>
+      <Typography>
+        <ConvertTranslate text={convertTinhTrangGameKeno(tinhTrang)} />
+      </Typography>
+      
     </StatusButton>
   );
 };
 export const convertJSXTinhTrangGameXucXac = (tinhTrang) => {
-  const { t } = useTranslation('common');
+
 
   return (
     <StatusButton
@@ -90,12 +97,15 @@ export const convertJSXTinhTrangGameXucXac = (tinhTrang) => {
         backgroundColor: convertMaMauTinhTrangGameXucXac(tinhTrang),
       }}
     >
-      <Typography>{t(convertTinhTrangGameXucXac(tinhTrang))}</Typography>
+      <Typography>
+        <ConvertTranslate text={convertTinhTrangGameXucXac(tinhTrang)} />
+      </Typography>
+  
     </StatusButton>
   );
 };
 export const convertJSXTinhTrangGameXocDia = (tinhTrang) => {
-  const { t } = useTranslation('common');
+
 
   return (
     <StatusButton
@@ -103,7 +113,9 @@ export const convertJSXTinhTrangGameXocDia = (tinhTrang) => {
         backgroundColor: convertMaMauTinhTrangGameXocDia(tinhTrang),
       }}
     >
-      <Typography>{t(convertTinhTrangGameXocDia(tinhTrang))}</Typography>
+     <Typography>
+        <ConvertTranslate text={convertTinhTrangGameXocDia(tinhTrang)} />
+      </Typography>
     </StatusButton>
   );
 };
@@ -114,12 +126,14 @@ export const convertJSXTinhTrangGameXoSo = (tinhTrang) => {
         backgroundColor: convertMaMauTinhTrangGameXoSo(tinhTrang),
       }}
     >
-      <Typography>{convertTinhTrangGameXoSo(tinhTrang)}</Typography>
+      <Typography>
+        <ConvertTranslate text={convertTinhTrangKetQuaBetGameXoSo(tinhTrang)} />
+      </Typography>
     </StatusButton>
   );
 };
 export const convertJSXTinhTrangBetGameXoSo = (tinhTrang) => {
-  const { t } = useTranslation('common');
+
   return (
     <StatusButton
       sx={{
@@ -322,7 +336,7 @@ export const convertJSXTinhTrangDepositHistory = (tinhTrang) => {
   );
 };
 export const convertJSXTinhTrangWithdrawHistory = (tinhTrang) => {
-  const { t } = useTranslation('common');
+
 
   return (
     <StatusButton
@@ -330,7 +344,9 @@ export const convertJSXTinhTrangWithdrawHistory = (tinhTrang) => {
         backgroundColor: convertMaMauTinhTrangWithdrawHistory(tinhTrang),
       }}
     >
-      <Typography>{t(convertTinhTrangWithdrawHistory(tinhTrang))}</Typography>
+      <Typography>
+        <ConvertTranslate text={convertTinhTrangWithdrawHistory(tinhTrang)} />
+      </Typography>
     </StatusButton>
   );
 };
