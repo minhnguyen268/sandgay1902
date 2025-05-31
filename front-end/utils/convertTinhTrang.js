@@ -68,13 +68,13 @@ const convertTinhTrang = (tinhTrang) => {
     );
   }
 };
-export const convertJSXTinhTrangGameKeno = (tinhTrang) => {
-  const ConvertTranslate = ({ text }) => {
+
+const ConvertTranslate = ({ text }) => {
   const { t } = useTranslation('common');
   return <>{t(text)}</>;
 }
 
-
+export const convertJSXTinhTrangGameKeno = (tinhTrang) => {
   return (
     <StatusButton
       sx={{
@@ -84,13 +84,12 @@ export const convertJSXTinhTrangGameKeno = (tinhTrang) => {
       <Typography>
         <ConvertTranslate text={convertTinhTrangGameKeno(tinhTrang)} />
       </Typography>
-      
     </StatusButton>
   );
 };
+
+
 export const convertJSXTinhTrangGameXucXac = (tinhTrang) => {
-
-
   return (
     <StatusButton
       sx={{
